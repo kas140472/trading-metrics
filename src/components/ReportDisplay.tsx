@@ -194,14 +194,22 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
 
   if (isProcessing) {
     return (
-      <div className="flex items-center justify-center h-64 text-center">
-        <div className="space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-blue-600" />
-          <div>
-            <p className="font-medium text-gray-900">Processing your CSV file...</p>
-            <p className="text-sm text-gray-600 mt-1">
-              Analyzing trades and generating performance report
+      <div className="flex items-center justify-center h-96 text-center">
+        <div className="space-y-6">
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-blue-200 rounded-full animate-spin border-t-blue-600 mx-auto"></div>
+            <div className="absolute inset-0 w-20 h-20 border-4 border-transparent rounded-full animate-pulse border-t-blue-400 mx-auto"></div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xl font-semibold text-slate-800">Processing your CSV file...</p>
+            <p className="text-slate-600">
+              Analyzing trades and generating comprehensive performance report
             </p>
+            <div className="flex items-center justify-center space-x-1 mt-4">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
           </div>
         </div>
       </div>
@@ -210,13 +218,17 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
 
   if (!report) {
     return (
-      <div className="flex items-center justify-center h-64 text-center">
-        <div className="space-y-4">
-          <FileText className="h-12 w-12 mx-auto text-gray-400" />
-          <div>
-            <p className="font-medium text-gray-900">No report generated yet</p>
-            <p className="text-sm text-gray-600 mt-1">
-              Upload a CSV file to generate your trading performance report
+      <div className="flex items-center justify-center h-96 text-center">
+        <div className="space-y-6">
+          <div className="w-24 h-24 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mx-auto">
+            <svg className="h-12 w-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xl font-semibold text-slate-800">No report generated yet</p>
+            <p className="text-slate-600 max-w-md mx-auto">
+              Upload a CSV file above to generate your comprehensive trading performance report with detailed analytics
             </p>
           </div>
         </div>
@@ -227,90 +239,121 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
   const parsedReport = parseReport(report);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <FileText className="h-5 w-5 text-green-600" />
-          <span className="font-medium text-gray-900">Trading Performance Report</span>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+            <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <span className="text-lg font-semibold text-green-800">Report Generated Successfully</span>
+            <p className="text-sm text-green-600">Trading performance analysis completed</p>
+          </div>
         </div>
-        <Button onClick={downloadReport} size="sm" variant="outline">
-          <Download className="h-4 w-4 mr-2" />
-          Download TXT
-        </Button>
+        <button 
+          onClick={downloadReport} 
+          className="inline-flex items-center px-6 py-3 bg-white border border-green-200 rounded-xl text-green-700 font-medium hover:bg-green-50 hover:border-green-300 transition-all duration-200 shadow-sm hover:shadow-md"
+        >
+          <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Download Report
+        </button>
       </div>
 
-      <ScrollArea className="h-[600px] w-full">
-        <div className="space-y-6 pr-4">
+      <ScrollArea className="h-[700px] w-full">
+        <div className="space-y-8 pr-4">
           {/* Header */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-center">FUTURES TRADING PERFORMANCE REPORT</CardTitle>
-              <p className="text-center text-sm text-gray-600">Generated on: {parsedReport.generatedOn}</p>
+          <Card className="bg-gradient-to-r from-slate-800 to-slate-700 text-white border-0">
+            <CardHeader className="text-center py-8">
+              <CardTitle className="text-3xl font-bold mb-2">FUTURES TRADING PERFORMANCE REPORT</CardTitle>
+              <p className="text-slate-300 text-lg">Generated on: {parsedReport.generatedOn}</p>
             </CardHeader>
           </Card>
 
           {/* Overall Performance */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Overall Performance</CardTitle>
+          <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50">
+            <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
+              <CardTitle className="text-xl flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Overall Performance
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-blue-600">{parsedReport.overallPerformance.totalTrades}</p>
-                  <p className="text-sm text-gray-600">Total Trades</p>
+            <CardContent className="p-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                  <p className="text-3xl font-bold text-blue-600 mb-1">{parsedReport.overallPerformance.totalTrades}</p>
+                  <p className="text-sm text-blue-700 font-medium">Total Trades</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-green-600">{parsedReport.overallPerformance.winningTrades}</p>
-                  <p className="text-sm text-gray-600">Winning Trades</p>
+                <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
+                  <p className="text-3xl font-bold text-green-600 mb-1">{parsedReport.overallPerformance.winningTrades}</p>
+                  <p className="text-sm text-green-700 font-medium">Winning Trades</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-red-600">{parsedReport.overallPerformance.losingTrades}</p>
-                  <p className="text-sm text-gray-600">Losing Trades</p>
+                <div className="text-center p-4 bg-red-50 rounded-xl border border-red-100">
+                  <p className="text-3xl font-bold text-red-600 mb-1">{parsedReport.overallPerformance.losingTrades}</p>
+                  <p className="text-sm text-red-700 font-medium">Losing Trades</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-600">{parsedReport.overallPerformance.winRate}</p>
-                  <p className="text-sm text-gray-600">Win Rate</p>
+                <div className="text-center p-4 bg-purple-50 rounded-xl border border-purple-100">
+                  <p className="text-3xl font-bold text-purple-600 mb-1">{parsedReport.overallPerformance.winRate}</p>
+                  <p className="text-sm text-purple-700 font-medium">Win Rate</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-green-600">{parsedReport.overallPerformance.totalPL}</p>
-                  <p className="text-sm text-gray-600">Total P/L</p>
+                <div className="text-center p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                  <p className="text-3xl font-bold text-emerald-600 mb-1">{parsedReport.overallPerformance.totalPL}</p>
+                  <p className="text-sm text-emerald-700 font-medium">Total P/L</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-orange-600">{parsedReport.overallPerformance.profitFactor}</p>
-                  <p className="text-sm text-gray-600">Profit Factor</p>
+                <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-100">
+                  <p className="text-3xl font-bold text-orange-600 mb-1">{parsedReport.overallPerformance.profitFactor}</p>
+                  <p className="text-sm text-orange-700 font-medium">Profit Factor</p>
                 </div>
               </div>
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div>Average Gain: <span className="font-medium">{parsedReport.overallPerformance.avgGain}</span></div>
-                <div>Average Loss: <span className="font-medium">{parsedReport.overallPerformance.avgLoss}</span></div>
-                <div>Average Size: <span className="font-medium">{parsedReport.overallPerformance.avgSize}</span></div>
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-slate-50 rounded-xl border">
+                <div className="text-center">
+                  <p className="text-sm text-slate-600 mb-1">Average Gain</p>
+                  <p className="font-semibold text-slate-800">{parsedReport.overallPerformance.avgGain}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-slate-600 mb-1">Average Loss</p>
+                  <p className="font-semibold text-slate-800">{parsedReport.overallPerformance.avgLoss}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-slate-600 mb-1">Average Size</p>
+                  <p className="font-semibold text-slate-800">{parsedReport.overallPerformance.avgSize}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Position Breakdown */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Position Breakdown</CardTitle>
+          <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50">
+            <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-t-lg">
+              <CardTitle className="text-xl flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                Position Breakdown
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <p className="text-xl font-bold text-blue-600">{parsedReport.positionBreakdown.longTrades}</p>
-                  <p className="text-sm text-gray-600">Long Trades</p>
+            <CardContent className="p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                  <p className="text-2xl font-bold text-blue-600 mb-1">{parsedReport.positionBreakdown.longTrades}</p>
+                  <p className="text-sm text-blue-700 font-medium">Long Trades</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold text-red-600">{parsedReport.positionBreakdown.shortTrades}</p>
-                  <p className="text-sm text-gray-600">Short Trades</p>
+                <div className="text-center p-4 bg-red-50 rounded-xl border border-red-100">
+                  <p className="text-2xl font-bold text-red-600 mb-1">{parsedReport.positionBreakdown.shortTrades}</p>
+                  <p className="text-sm text-red-700 font-medium">Short Trades</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold text-green-600">{parsedReport.positionBreakdown.longPL}</p>
-                  <p className="text-sm text-gray-600">Long P/L</p>
+                <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
+                  <p className="text-2xl font-bold text-green-600 mb-1">{parsedReport.positionBreakdown.longPL}</p>
+                  <p className="text-sm text-green-700 font-medium">Long P/L</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold text-green-600">{parsedReport.positionBreakdown.shortPL}</p>
-                  <p className="text-sm text-gray-600">Short P/L</p>
+                <div className="text-center p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                  <p className="text-2xl font-bold text-emerald-600 mb-1">{parsedReport.positionBreakdown.shortPL}</p>
+                  <p className="text-sm text-emerald-700 font-medium">Short P/L</p>
                 </div>
               </div>
             </CardContent>
@@ -318,50 +361,57 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
 
           {/* Realized Trades */}
           {parsedReport.trades.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Realized Trades ({parsedReport.trades.length})</CardTitle>
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50">
+              <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                  </svg>
+                  Realized Trades ({parsedReport.trades.length})
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>ID</TableHead>
-                        <TableHead>Symbol</TableHead>
-                        <TableHead>Position</TableHead>
-                        <TableHead>Entry Time</TableHead>
-                        <TableHead>Exit Time</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>Entry</TableHead>
-                        <TableHead>Exit</TableHead>
-                        <TableHead>Profit</TableHead>
-                        <TableHead>Gain %</TableHead>
+                      <TableRow className="bg-slate-50 hover:bg-slate-50">
+                        <TableHead className="font-semibold text-slate-700">ID</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Symbol</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Position</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Entry Time</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Exit Time</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Qty</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Entry</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Exit</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Profit</TableHead>
+                        <TableHead className="font-semibold text-slate-700">Gain %</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {parsedReport.trades.map((trade, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{trade.id}</TableCell>
-                          <TableCell className="font-medium">{trade.symbol}</TableCell>
+                        <TableRow key={index} className="hover:bg-slate-50/50">
+                          <TableCell className="font-medium text-slate-600">{trade.id}</TableCell>
+                          <TableCell className="font-bold text-slate-800">{trade.symbol}</TableCell>
                           <TableCell>
-                            <span className={`px-2 py-1 rounded text-xs ${
-                              trade.position === 'long' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              trade.position === 'long' 
+                                ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+                                : 'bg-red-100 text-red-800 border border-red-200'
                             }`}>
-                              {trade.position}
+                              {trade.position.toUpperCase()}
                             </span>
                           </TableCell>
-                          <TableCell className="text-xs">{trade.entryTime}</TableCell>
-                          <TableCell className="text-xs">{trade.exitTime}</TableCell>
-                          <TableCell>{trade.qty}</TableCell>
-                          <TableCell>{trade.entry}</TableCell>
-                          <TableCell>{trade.exit}</TableCell>
-                          <TableCell className={`font-medium ${
+                          <TableCell className="text-xs text-slate-600 font-mono">{trade.entryTime}</TableCell>
+                          <TableCell className="text-xs text-slate-600 font-mono">{trade.exitTime}</TableCell>
+                          <TableCell className="font-medium">{trade.qty}</TableCell>
+                          <TableCell className="font-mono">{trade.entry}</TableCell>
+                          <TableCell className="font-mono">{trade.exit}</TableCell>
+                          <TableCell className={`font-bold ${
                             trade.profit.includes('-') ? 'text-red-600' : 'text-green-600'
                           }`}>
                             {trade.profit}
                           </TableCell>
-                          <TableCell className={`${
+                          <TableCell className={`font-medium ${
                             trade.gainPercent.includes('-') ? 'text-red-600' : 'text-green-600'
                           }`}>
                             {trade.gainPercent}
@@ -377,35 +427,35 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
 
           {/* Performance by Product */}
           {parsedReport.performanceByProduct.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Performance by Product</CardTitle>
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50">
+              <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl">Performance by Product</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Symbol</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Trades</TableHead>
-                      <TableHead>Win %</TableHead>
-                      <TableHead>Total P/L</TableHead>
-                      <TableHead>Avg %</TableHead>
+                    <TableRow className="bg-slate-50 hover:bg-slate-50">
+                      <TableHead className="font-semibold text-slate-700">Symbol</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Type</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Trades</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Win %</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Total P/L</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Avg %</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {parsedReport.performanceByProduct.map((product, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{product.symbol}</TableCell>
-                        <TableCell>{product.type}</TableCell>
-                        <TableCell>{product.trades}</TableCell>
-                        <TableCell>{product.winPercent}</TableCell>
-                        <TableCell className={`font-medium ${
+                      <TableRow key={index} className="hover:bg-slate-50/50">
+                        <TableCell className="font-bold text-slate-800">{product.symbol}</TableCell>
+                        <TableCell className="text-slate-600">{product.type}</TableCell>
+                        <TableCell className="font-medium">{product.trades}</TableCell>
+                        <TableCell className="font-medium">{product.winPercent}</TableCell>
+                        <TableCell className={`font-bold ${
                           product.totalPL.includes('-') ? 'text-red-600' : 'text-green-600'
                         }`}>
                           {product.totalPL}
                         </TableCell>
-                        <TableCell>{product.avgPercent}</TableCell>
+                        <TableCell className="font-medium">{product.avgPercent}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -416,39 +466,41 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
 
           {/* Performance by Position Type */}
           {parsedReport.performanceByPosition.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Performance by Position Type</CardTitle>
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-slate-50">
+              <CardHeader className="bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl">Performance by Position Type</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Position</TableHead>
-                      <TableHead>Trades</TableHead>
-                      <TableHead>Win %</TableHead>
-                      <TableHead>Total P/L</TableHead>
-                      <TableHead>Avg %</TableHead>
+                    <TableRow className="bg-slate-50 hover:bg-slate-50">
+                      <TableHead className="font-semibold text-slate-700">Position</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Trades</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Win %</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Total P/L</TableHead>
+                      <TableHead className="font-semibold text-slate-700">Avg %</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {parsedReport.performanceByPosition.map((position, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">
-                          <span className={`px-2 py-1 rounded text-xs ${
-                            position.position === 'Long' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+                      <TableRow key={index} className="hover:bg-slate-50/50">
+                        <TableCell>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            position.position === 'Long' 
+                              ? 'bg-blue-100 text-blue-800 border border-blue-200' 
+                              : 'bg-red-100 text-red-800 border border-red-200'
                           }`}>
-                            {position.position}
+                            {position.position.toUpperCase()}
                           </span>
                         </TableCell>
-                        <TableCell>{position.trades}</TableCell>
-                        <TableCell>{position.winPercent}</TableCell>
-                        <TableCell className={`font-medium ${
+                        <TableCell className="font-medium">{position.trades}</TableCell>
+                        <TableCell className="font-medium">{position.winPercent}</TableCell>
+                        <TableCell className={`font-bold ${
                           position.totalPL.includes('-') ? 'text-red-600' : 'text-green-600'
                         }`}>
                           {position.totalPL}
                         </TableCell>
-                        <TableCell>{position.avgPercent}</TableCell>
+                        <TableCell className="font-medium">{position.avgPercent}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -458,11 +510,11 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
           )}
 
           {/* Footer */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-gray-600 space-y-1">
-                <p>Source: {parsedReport.source}</p>
-                <p>Capital base: {parsedReport.capitalBase}</p>
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-slate-700 to-slate-600 text-white">
+            <CardContent className="py-6">
+              <div className="text-center space-y-2">
+                <p className="text-slate-300"><span className="font-medium">Source:</span> {parsedReport.source}</p>
+                <p className="text-slate-300"><span className="font-medium">Capital base:</span> {parsedReport.capitalBase}</p>
               </div>
             </CardContent>
           </Card>
