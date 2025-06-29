@@ -461,20 +461,33 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
   if (trades.length > 0) {
     lines.push(
       `REALIZED TRADES (${trades.length})`,
-      "-".repeat(150),
-      `${'ID'.padEnd(4)} ${'Symbol'.padEnd(12)} ${'Type'.padEnd(8)} ${'Pos'.padEnd(6)} ${'Entry Time'.padEnd(19)} ${'Exit Time'.padEnd(19)} ${'Qty'.padEnd(6)} ${'Entry'.padEnd(10)} ${'Exit'.padEnd(10)} ${'Profit'.padEnd(12)} ${'Gain %'.padEnd(10)} ${'Size %'.padEnd(8)}`,
-      "-".repeat(150)
+      "-".repeat(130),
+      "ID   Symbol       Type     Pos    Entry Time          Exit Time           Qty    Entry      Exit       Profit       Gain %     Size %",
+      "-".repeat(130)
     );
     
     for (const trade of trades) {
-      const entryTime = trade.entryTime.toLocaleString();
-      const exitTime = trade.exitTime.toLocaleString();
+      const entryTime = trade.entryTime.toISOString().slice(0, 19).replace('T', ' ');
+      const exitTime = trade.exitTime.toISOString().slice(0, 19).replace('T', ' ');
       const profitStr = `$${trade.profit.toFixed(2)}`;
       const percentStr = `${trade.percentGain.toFixed(1)}%`;
       
-      lines.push(
-        `${trade.tradeId.toString().padEnd(4)} ${trade.symbol.padEnd(12)} ${trade.type.padEnd(8)} ${trade.position.padEnd(6)} ${entryTime.padEnd(19)} ${exitTime.padEnd(19)} ${trade.quantity.toFixed(0).padEnd(6)} $${trade.entryPrice.toFixed(2).padEnd(9)} $${trade.exitPrice.toFixed(2).padEnd(9)} ${profitStr.padEnd(12)} ${percentStr.padEnd(10)} ${trade.size.toFixed(1)}%`
-      );
+      const line = [
+        trade.tradeId.toString().padEnd(4),
+        trade.symbol.padEnd(12),
+        trade.type.padEnd(8),
+        trade.position.padEnd(6),
+        entryTime.padEnd(19),
+        exitTime.padEnd(19),
+        trade.quantity.toString().padEnd(6),
+        `$${trade.entryPrice.toFixed(2)}`.padEnd(10),
+        `$${trade.exitPrice.toFixed(2)}`.padEnd(10),
+        profitStr.padEnd(12),
+        percentStr.padEnd(10),
+        `${trade.size.toFixed(1)}%`
+      ].join(' ');
+      
+      lines.push(line);
     }
     
     lines.push("");
@@ -484,15 +497,23 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
   if (openPositions.length > 0) {
     lines.push(
       `OPEN POSITIONS (${openPositions.length})`,
-      "-".repeat(100),
-      `${'Symbol'.padEnd(12)} ${'Type'.padEnd(8)} ${'Pos'.padEnd(6)} ${'Qty'.padEnd(6)} ${'Price'.padEnd(10)} ${'Cost Basis'.padEnd(15)} ${'Size %'.padEnd(8)}`,
-      "-".repeat(100)
+      "-".repeat(80),
+      "Symbol       Type     Pos    Qty    Price      Cost Basis     Size %",
+      "-".repeat(80)
     );
     
     for (const pos of openPositions.sort((a, b) => a.symbol.localeCompare(b.symbol))) {
-      lines.push(
-        `${pos.symbol.padEnd(12)} ${pos.type.padEnd(8)} ${pos.position.padEnd(6)} ${pos.quantity.toFixed(0).padEnd(6)} $${pos.avgPrice.toFixed(2).padEnd(9)} $${pos.costBasis.toFixed(2).padEnd(14)} ${pos.size.toFixed(1)}%`
-      );
+      const line = [
+        pos.symbol.padEnd(12),
+        pos.type.padEnd(8),
+        pos.position.padEnd(6),
+        pos.quantity.toString().padEnd(6),
+        `$${pos.avgPrice.toFixed(2)}`.padEnd(10),
+        `$${pos.costBasis.toFixed(2)}`.padEnd(14),
+        `${pos.size.toFixed(1)}%`
+      ].join(' ');
+      
+      lines.push(line);
     }
     
     lines.push("");
@@ -512,7 +533,7 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
     lines.push(
       "PERFORMANCE BY PRODUCT",
       "-".repeat(70),
-      `${'Symbol'.padEnd(12)} ${'Type'.padEnd(8)} ${'Trades'.padEnd(8)} ${'Win %'.padEnd(8)} ${'Total P/L'.padEnd(15)} ${'Avg %'.padEnd(10)}`,
+      "Symbol       Type     Trades   Win %    Total P/L       Avg %",
       "-".repeat(70)
     );
     
@@ -523,9 +544,16 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
       const totalPnl = symbolTrades.reduce((sum, t) => sum + t.profit, 0);
       const avgPct = numTrades > 0 ? symbolTrades.reduce((sum, t) => sum + t.percentGain, 0) / numTrades : 0;
       
-      lines.push(
-        `${symbol.padEnd(12)} ${'future'.padEnd(8)} ${numTrades.toString().padEnd(8)} ${winPct.toFixed(1).padEnd(8)} $${totalPnl.toFixed(2).padEnd(14)} ${avgPct.toFixed(2).padEnd(10)}`
-      );
+      const line = [
+        symbol.padEnd(12),
+        'future'.padEnd(8),
+        numTrades.toString().padEnd(8),
+        `${winPct.toFixed(1)}%`.padEnd(8),
+        `$${totalPnl.toFixed(2)}`.padEnd(15),
+        `${avgPct.toFixed(2)}%`
+      ].join(' ');
+      
+      lines.push(line);
     }
     
     lines.push("");
@@ -535,7 +563,7 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
   lines.push(
     "PERFORMANCE BY POSITION TYPE",
     "-".repeat(70),
-    `${'Position'.padEnd(10)} ${'Trades'.padEnd(8)} ${'Win %'.padEnd(8)} ${'Total P/L'.padEnd(15)} ${'Avg %'.padEnd(10)}`,
+    "Position   Trades   Win %    Total P/L       Avg %",
     "-".repeat(70)
   );
   
@@ -546,9 +574,15 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
     const longWinPct = (longWins / longTrades.length) * 100;
     const longAvgPct = longTrades.reduce((sum, t) => sum + t.percentGain, 0) / longTrades.length;
     
-    lines.push(
-      `${'Long'.padEnd(10)} ${metrics.longTrades.toString().padEnd(8)} ${longWinPct.toFixed(1).padEnd(8)} $${metrics.longProfit.toFixed(2).padEnd(14)} ${longAvgPct.toFixed(2).padEnd(10)}`
-    );
+    const line = [
+      'Long'.padEnd(10),
+      metrics.longTrades.toString().padEnd(8),
+      `${longWinPct.toFixed(1)}%`.padEnd(8),
+      `$${metrics.longProfit.toFixed(2)}`.padEnd(15),
+      `${longAvgPct.toFixed(2)}%`
+    ].join(' ');
+    
+    lines.push(line);
   }
   
   // Short positions
@@ -558,9 +592,15 @@ function generateReport(trades: Trade[], openPositions: OpenPosition[], metrics:
     const shortWinPct = (shortWins / shortTrades.length) * 100;
     const shortAvgPct = shortTrades.reduce((sum, t) => sum + t.percentGain, 0) / shortTrades.length;
     
-    lines.push(
-      `${'Short'.padEnd(10)} ${metrics.shortTrades.toString().padEnd(8)} ${shortWinPct.toFixed(1).padEnd(8)} $${metrics.shortProfit.toFixed(2).padEnd(14)} ${shortAvgPct.toFixed(2).padEnd(10)}`
-    );
+    const line = [
+      'Short'.padEnd(10),
+      metrics.shortTrades.toString().padEnd(8),
+      `${shortWinPct.toFixed(1)}%`.padEnd(8),
+      `$${metrics.shortProfit.toFixed(2)}`.padEnd(15),
+      `${shortAvgPct.toFixed(2)}%`
+    ].join(' ');
+    
+    lines.push(line);
   }
   
   lines.push("");
