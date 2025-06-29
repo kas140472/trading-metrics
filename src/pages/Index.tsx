@@ -29,7 +29,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-slate-800 mb-4">
@@ -41,22 +41,21 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Upload Section */}
-            <Card className="p-6 shadow-lg border-0 bg-white/80 backdrop-blur">
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-2xl font-semibold text-slate-800 mb-2">
-                    Upload CSV File
-                  </h2>
-                  <p className="text-slate-600">
-                    Select your QuantConnect trading orders CSV file to analyze.
-                  </p>
-                </div>
-                
-                <Separator />
-                
+          {/* Upload Section - Full Width */}
+          <Card className="p-6 shadow-lg border-0 bg-white/80 backdrop-blur mb-8">
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-slate-800 mb-2">
+                  Upload CSV File
+                </h2>
+                <p className="text-slate-600">
+                  Select your QuantConnect trading orders CSV file to analyze.
+                </p>
+              </div>
+              
+              <Separator />
+              
+              <div className="max-w-2xl mx-auto">
                 <FileUpload
                   onFileProcessed={handleFileProcessed}
                   onError={handleError}
@@ -66,35 +65,35 @@ const Index = () => {
                 />
 
                 {error && (
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg mt-4">
                     <p className="text-red-700 font-medium">Error:</p>
                     <p className="text-red-600 text-sm mt-1">{error}</p>
                   </div>
                 )}
               </div>
-            </Card>
+            </div>
+          </Card>
 
-            {/* Report Section */}
-            <Card className="p-6 shadow-lg border-0 bg-white/80 backdrop-blur">
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-2xl font-semibold text-slate-800 mb-2">
-                    Performance Report
-                  </h2>
-                  <p className="text-slate-600">
-                    Your detailed trading analysis will appear here.
-                  </p>
-                </div>
-                
-                <Separator />
-                
-                <ReportDisplay 
-                  report={report} 
-                  isProcessing={isProcessing}
-                />
+          {/* Report Section - Full Width */}
+          <Card className="p-6 shadow-lg border-0 bg-white/80 backdrop-blur">
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-slate-800 mb-2">
+                  Performance Report
+                </h2>
+                <p className="text-slate-600">
+                  Your detailed trading analysis will appear here.
+                </p>
               </div>
-            </Card>
-          </div>
+              
+              <Separator />
+              
+              <ReportDisplay 
+                report={report} 
+                isProcessing={isProcessing}
+              />
+            </div>
+          </Card>
 
           {/* Features Section */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">

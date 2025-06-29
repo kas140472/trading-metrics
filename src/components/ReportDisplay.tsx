@@ -239,7 +239,7 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
         </Button>
       </div>
 
-      <ScrollArea className="h-[800px] w-full">
+      <ScrollArea className="h-[600px] w-full">
         <div className="space-y-6 pr-4">
           {/* Header */}
           <Card>
@@ -323,52 +323,54 @@ const ReportDisplay = ({ report, isProcessing }: ReportDisplayProps) => {
                 <CardTitle>Realized Trades ({parsedReport.trades.length})</CardTitle>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Symbol</TableHead>
-                      <TableHead>Position</TableHead>
-                      <TableHead>Entry Time</TableHead>
-                      <TableHead>Exit Time</TableHead>
-                      <TableHead>Qty</TableHead>
-                      <TableHead>Entry</TableHead>
-                      <TableHead>Exit</TableHead>
-                      <TableHead>Profit</TableHead>
-                      <TableHead>Gain %</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {parsedReport.trades.map((trade, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{trade.id}</TableCell>
-                        <TableCell className="font-medium">{trade.symbol}</TableCell>
-                        <TableCell>
-                          <span className={`px-2 py-1 rounded text-xs ${
-                            trade.position === 'long' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
-                          }`}>
-                            {trade.position}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-xs">{trade.entryTime}</TableCell>
-                        <TableCell className="text-xs">{trade.exitTime}</TableCell>
-                        <TableCell>{trade.qty}</TableCell>
-                        <TableCell>{trade.entry}</TableCell>
-                        <TableCell>{trade.exit}</TableCell>
-                        <TableCell className={`font-medium ${
-                          trade.profit.includes('-') ? 'text-red-600' : 'text-green-600'
-                        }`}>
-                          {trade.profit}
-                        </TableCell>
-                        <TableCell className={`${
-                          trade.gainPercent.includes('-') ? 'text-red-600' : 'text-green-600'
-                        }`}>
-                          {trade.gainPercent}
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Symbol</TableHead>
+                        <TableHead>Position</TableHead>
+                        <TableHead>Entry Time</TableHead>
+                        <TableHead>Exit Time</TableHead>
+                        <TableHead>Qty</TableHead>
+                        <TableHead>Entry</TableHead>
+                        <TableHead>Exit</TableHead>
+                        <TableHead>Profit</TableHead>
+                        <TableHead>Gain %</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {parsedReport.trades.map((trade, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{trade.id}</TableCell>
+                          <TableCell className="font-medium">{trade.symbol}</TableCell>
+                          <TableCell>
+                            <span className={`px-2 py-1 rounded text-xs ${
+                              trade.position === 'long' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+                            }`}>
+                              {trade.position}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-xs">{trade.entryTime}</TableCell>
+                          <TableCell className="text-xs">{trade.exitTime}</TableCell>
+                          <TableCell>{trade.qty}</TableCell>
+                          <TableCell>{trade.entry}</TableCell>
+                          <TableCell>{trade.exit}</TableCell>
+                          <TableCell className={`font-medium ${
+                            trade.profit.includes('-') ? 'text-red-600' : 'text-green-600'
+                          }`}>
+                            {trade.profit}
+                          </TableCell>
+                          <TableCell className={`${
+                            trade.gainPercent.includes('-') ? 'text-red-600' : 'text-green-600'
+                          }`}>
+                            {trade.gainPercent}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           )}
