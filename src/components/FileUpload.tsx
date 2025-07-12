@@ -81,39 +81,42 @@ const FileUpload = ({ onFileProcessed, onError, isProcessing, setIsProcessing, o
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {!selectedFile ? (
         <div
-          className={`relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${
+          className={`relative border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-500 ${
             dragActive 
-              ? 'border-blue-400 bg-blue-500/10 scale-105' 
-              : 'border-gray-600 hover:border-gray-500 bg-white/5'
+              ? 'border-blue-400 bg-blue-50 scale-105 shadow-xl shadow-blue-500/20' 
+              : 'border-slate-300 hover:border-blue-300 bg-gradient-to-br from-slate-50/50 to-blue-50/50 hover:shadow-xl hover:shadow-blue-500/10'
           } backdrop-blur-sm`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
         >
-          <div className="space-y-6">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-xl">
-              <Upload className="h-8 w-8 text-white" />
+          <div className="space-y-8">
+            <div className="relative">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/25 transform hover:rotate-12 transition-transform duration-300">
+                <Upload className="h-10 w-10 text-white" />
+              </div>
+              <div className="absolute -top-2 -right-8 w-6 h-6 bg-yellow-400 rounded-full animate-bounce" />
             </div>
             
             <div>
-              <p className="text-2xl font-bold text-white mb-3">
+              <p className="text-3xl font-bold text-slate-800 mb-4">
                 Drop your CSV file here
               </p>
-              <p className="text-gray-300 mb-6 text-lg">
-                or click to browse files
+              <p className="text-slate-600 mb-8 text-lg font-light">
+                or click the button below to browse
               </p>
             </div>
             
             <Button
-              variant="outline"
               onClick={() => fileInputRef.current?.click()}
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30 px-8 py-3 text-lg font-medium backdrop-blur-sm transition-all duration-300"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold px-10 py-4 text-lg rounded-2xl shadow-xl shadow-blue-500/25 transform hover:scale-105 transition-all duration-300 border-0"
             >
-              Select File
+              <Upload className="mr-3 h-5 w-5" />
+              Choose File
             </Button>
             
             <input
@@ -124,21 +127,21 @@ const FileUpload = ({ onFileProcessed, onError, isProcessing, setIsProcessing, o
               className="hidden"
             />
             
-            <p className="text-sm text-gray-400 mt-6 font-light">
+            <p className="text-sm text-slate-500 mt-8 font-light">
               Maximum file size: 10MB • Supported format: CSV
             </p>
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                <FileText className="h-6 w-6 text-white" />
+        <div className="space-y-8">
+          <div className="flex items-center justify-between p-8 bg-gradient-to-r from-green-50 to-emerald-50 backdrop-blur-sm rounded-3xl border border-green-200 shadow-xl shadow-green-500/10">
+            <div className="flex items-center space-x-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/25">
+                <FileText className="h-8 w-8 text-white" />
               </div>
               <div>
-                <p className="font-semibold text-white text-lg">{selectedFile.name}</p>
-                <p className="text-gray-300">
+                <p className="font-bold text-slate-800 text-xl">{selectedFile.name}</p>
+                <p className="text-slate-600 text-lg">
                   {(selectedFile.size / 1024).toFixed(1)} KB
                 </p>
               </div>
@@ -148,29 +151,29 @@ const FileUpload = ({ onFileProcessed, onError, isProcessing, setIsProcessing, o
               size="sm"
               onClick={resetFile}
               disabled={isProcessing}
-              className="text-gray-300 hover:text-white hover:bg-white/10"
+              className="text-slate-500 hover:text-slate-700 hover:bg-white/50 rounded-xl"
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </Button>
           </div>
           
           <Button 
             onClick={processFile} 
             disabled={isProcessing}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 text-lg shadow-xl shadow-blue-500/25 transition-all duration-300"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 text-xl shadow-2xl shadow-blue-500/25 transition-all duration-300 rounded-2xl transform hover:scale-105"
             size="lg"
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-3 h-5 w-5 animate-spin" />
-                Processing...
+                <Loader2 className="mr-4 h-6 w-6 animate-spin" />
+                Analyzing your data...
               </>
             ) : (
               <>
-                <svg className="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="mr-4 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                Generate Report
+                Generate Analytics Report
               </>
             )}
           </Button>
