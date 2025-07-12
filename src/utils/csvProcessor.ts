@@ -1,4 +1,3 @@
-
 // CSV Processing utility for trading analysis
 // This implements the Python logic in TypeScript for client-side processing
 
@@ -99,6 +98,36 @@ function parseTimestamp(timestampStr: string): Date {
   }
 }
 
+function detectCSVFormat(headers: string[]): { hasDeployColumn: boolean; columnMapping: { [key: string]: number } } {
+  console.log('Detecting CSV format from headers:', headers);
+  
+  const hasDeployColumn = headers[0].toLowerCase().includes('deploy');
+  const columnMapping: { [key: string]: number } = {};
+  
+  if (hasDeployColumn) {
+    // Format: Deploy,Time,Symbol,Price,Quantity,Type,Status,Value,Tag
+    columnMapping['Deploy'] = 0;
+    columnMapping['Time'] = 1;
+    columnMapping['Symbol'] = 2;
+    columnMapping['Price'] = 3;
+    columnMapping['Quantity'] = 4;
+    columnMapping['Type'] = 5;
+    columnMapping['Status'] = 6;
+    columnMapping['Value'] = 7;
+    columnMapping['Tag'] = 8;
+  } else {
+    // Format: Time,Symbol,Price,Quantity,Type,Status,Value,Tag (or similar)
+    // Find column indices by name
+    headers.forEach((header, index) => {
+      const normalizedHeader = header.trim();
+      columnMapping[normalizedHeader] = index;
+    });
+  }
+  
+  console.log('Detected format:', { hasDeployColumn, columnMapping });
+  return { hasDeployColumn, columnMapping };
+}
+
 async function loadOrdersFromCSV(file: File): Promise<Order[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -116,9 +145,18 @@ async function loadOrdersFromCSV(file: File): Promise<Order[]> {
         const headers = lines[0].split(',').map(h => h.trim());
         console.log('CSV Headers:', headers);
         
-        // Check for required columns
+        // Detect CSV format and get column mapping
+        const { hasDeployColumn, columnMapping } = detectCSVFormat(headers);
+        
+        // Check for required columns based on format
         const requiredColumns = ['Time', 'Symbol', 'Price', 'Quantity', 'Type', 'Status'];
-        const missingColumns = requiredColumns.filter(col => !headers.includes(col));
+        const missingColumns = requiredColumns.filter(col => {
+          if (hasDeployColumn) {
+            return columnMapping[col] === undefined;
+          } else {
+            return !headers.includes(col);
+          }
+        });
         
         if (missingColumns.length > 0) {
           reject(new Error(`Missing required columns: ${missingColumns.join(', ')}`));
@@ -136,22 +174,53 @@ async function loadOrdersFromCSV(file: File): Promise<Order[]> {
           if (values.length < headers.length) continue;
           
           try {
-            const rowData: { [key: string]: string } = {};
-            headers.forEach((header, index) => {
-              rowData[header] = values[index] || '';
-            });
+            let timeValue: string;
+            let symbolValue: string;
+            let priceValue: string;
+            let quantityValue: string;
+            let typeValue: string;
+            let statusValue: string;
+            let valueValue: string;
+            let tagValue: string;
+            
+            if (hasDeployColumn) {
+              // Use fixed positions for the new format
+              timeValue = values[columnMapping['Time']] || '';
+              symbolValue = values[columnMapping['Symbol']] || '';
+              priceValue = values[columnMapping['Price']] || '';
+              quantityValue = values[columnMapping['Quantity']] || '';
+              typeValue = values[columnMapping['Type']] || '';
+              statusValue = values[columnMapping['Status']] || '';
+              valueValue = values[columnMapping['Value']] || '';
+              tagValue = values[columnMapping['Tag']] || '';
+            } else {
+              // Use header-based mapping for the original format
+              const rowData: { [key: string]: string } = {};
+              headers.forEach((header, index) => {
+                rowData[header] = values[index] || '';
+              });
+              
+              timeValue = rowData['Time'] || '';
+              symbolValue = rowData['Symbol'] || '';
+              priceValue = rowData['Price'] || '';
+              quantityValue = rowData['Quantity'] || '';
+              typeValue = rowData['Type'] || '';
+              statusValue = rowData['Status'] || '';
+              valueValue = rowData['Value'] || '';
+              tagValue = rowData['Tag'] || '';
+            }
             
             const order: Order = {
-              timestamp: parseTimestamp(rowData['Time']),
-              symbol: rowData['Symbol'],
-              baseSymbol: getBaseSymbol(rowData['Symbol']),
-              price: parseFloat(rowData['Price']) || 0,
-              quantity: parseInt(rowData['Quantity']) || 0,
-              type: rowData['Type'],
-              status: rowData['Status'],
-              value: parseFloat(rowData['Value']) || 0,
-              tag: rowData['Tag'] || '',
-              multiplier: getMultiplier(rowData['Symbol'])
+              timestamp: parseTimestamp(timeValue),
+              symbol: symbolValue,
+              baseSymbol: getBaseSymbol(symbolValue),
+              price: parseFloat(priceValue) || 0,
+              quantity: parseInt(quantityValue) || 0,
+              type: typeValue,
+              status: statusValue,
+              value: parseFloat(valueValue) || 0,
+              tag: tagValue,
+              multiplier: getMultiplier(symbolValue)
             };
             
             orders.push(order);
@@ -163,7 +232,7 @@ async function loadOrdersFromCSV(file: File): Promise<Order[]> {
         // Sort by timestamp
         orders.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
         
-        console.log(`Loaded ${orders.length} orders from CSV`);
+        console.log(`Loaded ${orders.length} orders from CSV (format: ${hasDeployColumn ? 'with Deploy column' : 'standard'})`);
         resolve(orders);
         
       } catch (error) {
