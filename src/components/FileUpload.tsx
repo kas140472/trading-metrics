@@ -81,67 +81,52 @@ const FileUpload = ({ onFileProcessed, onError, isProcessing, setIsProcessing, o
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {!selectedFile ? (
         <div
-          className={`relative border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-500 ${
+          className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
             dragActive 
-              ? 'border-blue-400 bg-blue-50 scale-105 shadow-xl shadow-blue-500/20' 
-              : 'border-slate-300 hover:border-blue-300 bg-gradient-to-br from-slate-50/50 to-blue-50/50 hover:shadow-xl hover:shadow-blue-500/10'
-          } backdrop-blur-sm`}
+              ? 'border-blue-400 bg-blue-50' 
+              : 'border-gray-300 hover:border-gray-400'
+          }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
         >
-          <div className="space-y-8">
-            <div className="relative">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/25 transform hover:rotate-12 transition-transform duration-300">
-                <Upload className="h-10 w-10 text-white" />
-              </div>
-              <div className="absolute -top-2 -right-8 w-6 h-6 bg-yellow-400 rounded-full animate-bounce" />
-            </div>
-            
-            <div>
-              <p className="text-3xl font-bold text-slate-800 mb-4">
-                Drop your CSV file here
-              </p>
-              <p className="text-slate-600 mb-8 text-lg font-light">
-                or click the button below to browse
-              </p>
-            </div>
-            
-            <Button
-              onClick={() => fileInputRef.current?.click()}
-              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold px-10 py-4 text-lg rounded-2xl shadow-xl shadow-blue-500/25 transform hover:scale-105 transition-all duration-300 border-0"
-            >
-              <Upload className="mr-3 h-5 w-5" />
-              Choose File
-            </Button>
-            
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".csv"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-              className="hidden"
-            />
-            
-            <p className="text-sm text-slate-500 mt-8 font-light">
-              Maximum file size: 10MB • Supported format: CSV
-            </p>
-          </div>
+          <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+          <p className="text-lg font-medium text-gray-900 mb-2">
+            Drop your CSV file here
+          </p>
+          <p className="text-sm text-gray-600 mb-4">
+            or click to browse files
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="relative"
+          >
+            Select File
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv"
+            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+            className="hidden"
+          />
+          <p className="text-xs text-gray-500 mt-4">
+            Maximum file size: 10MB • Supported format: CSV
+          </p>
         </div>
       ) : (
-        <div className="space-y-8">
-          <div className="flex items-center justify-between p-8 bg-gradient-to-r from-green-50 to-emerald-50 backdrop-blur-sm rounded-3xl border border-green-200 shadow-xl shadow-green-500/10">
-            <div className="flex items-center space-x-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/25">
-                <FileText className="h-8 w-8 text-white" />
-              </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <FileText className="h-8 w-8 text-blue-600" />
               <div>
-                <p className="font-bold text-slate-800 text-xl">{selectedFile.name}</p>
-                <p className="text-slate-600 text-lg">
+                <p className="font-medium text-gray-900">{selectedFile.name}</p>
+                <p className="text-sm text-gray-600">
                   {(selectedFile.size / 1024).toFixed(1)} KB
                 </p>
               </div>
@@ -151,30 +136,24 @@ const FileUpload = ({ onFileProcessed, onError, isProcessing, setIsProcessing, o
               size="sm"
               onClick={resetFile}
               disabled={isProcessing}
-              className="text-slate-500 hover:text-slate-700 hover:bg-white/50 rounded-xl"
             >
-              <X className="h-6 w-6" />
+              <X className="h-4 w-4" />
             </Button>
           </div>
           
           <Button 
             onClick={processFile} 
             disabled={isProcessing}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 text-xl shadow-2xl shadow-blue-500/25 transition-all duration-300 rounded-2xl transform hover:scale-105"
+            className="w-full"
             size="lg"
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-4 h-6 w-6 animate-spin" />
-                Analyzing your data...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
               </>
             ) : (
-              <>
-                <svg className="mr-4 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Generate Analytics Report
-              </>
+              'Generate Report'
             )}
           </Button>
         </div>
