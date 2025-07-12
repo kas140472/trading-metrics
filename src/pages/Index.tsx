@@ -116,39 +116,6 @@ const Index = () => {
               />
             </div>
           </Card>
-
-          {/* Features Section */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="group text-center p-8 bg-white/70 rounded-2xl backdrop-blur-sm hover:bg-white/90 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Comprehensive Analytics</h3>
-              <p className="text-slate-600 leading-relaxed">Detailed performance metrics including win rate, profit factor, and position analysis with visual insights.</p>
-            </div>
-
-            <div className="group text-center p-8 bg-white/70 rounded-2xl backdrop-blur-sm hover:bg-white/90 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Futures Trading Focus</h3>
-              <p className="text-slate-600 leading-relaxed">Specialized analysis for futures contracts with proper multipliers and precise sizing calculations.</p>
-            </div>
-
-            <div className="group text-center p-8 bg-white/70 rounded-2xl backdrop-blur-sm hover:bg-white/90 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
-                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Downloadable Reports</h3>
-              <p className="text-slate-600 leading-relaxed">Export your analysis as beautifully formatted text files for further review and record keeping.</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
